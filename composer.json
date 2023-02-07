@@ -1,0 +1,32 @@
+{
+    "name": "marinar/uriable",
+    "description": "Plugin for making uri slugs",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Marin Ivanov",
+            "email": "marin@dev.nddesign.no"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Marinar\\Uriable\\": "src/"
+        }
+    },
+
+    "require": {
+    },
+    "extra": {
+        "marinar": {
+            "module": false,
+            "plugin": true,
+            "addon_to": false
+        },
+        "laravel": {
+            "aliases": {
+                "MarinarUriable": "Marinar\\Uriable\\MarinarUriable"
+            }
+        }
+    }
+}
