@@ -22,12 +22,6 @@ class Uri extends Model {
         // @HOOK_URIABLE_CLASSES
     ];
 
-    protected static function boot() {
-        parent::boot();
-
-        // @HOOK_BOOT
-    }
-
     public function uriable() {
         return $this->morphTo();
     }
