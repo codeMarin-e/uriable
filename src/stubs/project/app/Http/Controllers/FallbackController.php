@@ -54,10 +54,10 @@ class FallbackController extends Controller
 
 //        opcache_reset();
         //FOR WHERE_I_AM
-        \Marinar\Marinar\Providers\MarinarBeforeServiceProvider::$where_i_am = null;
-        \Marinar\Marinar\Providers\MarinarBeforeServiceProvider::$main_segments = null;
-        \Marinar\Marinar\Providers\MarinarBeforeServiceProvider::$route_segments = null;
-        \Marinar\Marinar\Providers\MarinarBeforeServiceProvider::$route_use_locale = false;
+        \App\Providers\MarinarBeforeServiceProvider::$where_i_am = null;
+        \App\Providers\MarinarBeforeServiceProvider::$main_segments = null;
+        \App\Providers\MarinarBeforeServiceProvider::$route_segments = null;
+        \App\Providers\MarinarBeforeServiceProvider::$route_use_locale = false;
 
         return app()->handle($request2);
     }
