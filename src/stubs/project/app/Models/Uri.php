@@ -65,7 +65,7 @@ class Uri extends Model {
         ], $dictionary));
     }
 
-    public static function validationRules($inputBag, $uriable = null, $excludeTypes = [], $addTypes = []) {
+    public static function validationRules($inputBag, $uriable = null, $excludeTypes = [], $addTypes = [], $lang_prefix = null) {
         $typeOptions = [];
         if(!in_array('default', $excludeTypes)) $typeOptions[] = 'default';
         if(!in_array('link', $excludeTypes)) $typeOptions[] = 'link';
@@ -73,31 +73,34 @@ class Uri extends Model {
             if(in_array($class, $excludeTypes)) continue;
             $typeOptions[] = $class;
         }
+        $translations = trans('admin/uriable/uriable.validation');
+        $langs = isset($lang_prefix)?
+            transOrOther($lang_prefix, 'admin/uriable/uriable.validation', array_keys($translations)) : $translations;
         $typeOptions = implode(',', array_merge($typeOptions, $addTypes));
         return [
-            'uri.slug' => ['nullable', 'max:255', function($attribute, $value, $fail) use ($inputBag, $uriable) {
+            'uri.slug' => ['nullable', 'max:255', function($attribute, $value, $fail) use ($inputBag, $uriable, $langs) {
                 $pointableType = request("{$inputBag}.uri.pointable_type", "default");
                 if($pointableType !== 'default' && $value === '') {
-                    return $fail( trans('admin/uriable/uriable.validation.uri.slug.required') );
+                    return $fail( $langs['admin/uriable/uriable.validation.uri.slug.required'] );
                 }
                 if($pointableType === 'default') {
                     $value = static::prepareSlug($value);
                     if(($foundUriable = static::modelBySlug($value)) && !$foundUriable->is($uriable) ) {
-                        return $fail( trans('admin/uriable/uriable.validation.uri.slug.already_used') );
+                        return $fail( $langs['admin/uriable/uriable.validation.uri.slug.already_used'] );
                     }
                     return;
                 }
                 if($pointableType === 'link') {
                     if(filter_var($value, FILTER_VALIDATE_URL) === false) {
-                        return $fail( trans('admin/uriable/uriable.validation.uri.slug.not_a_link') );
+                        return $fail( $langs['admin/uriable/uriable.validation.uri.slug.not_a_link'] );
                     }
                     return;
                 }
                 if(!($foundUriable = ($pointableType)::find((int)$value))) {
-                    return $fail( trans('admin/uriable/uriable.validation.uri.slug.not_found') );
+                    return $fail( $langs['admin/uriable/uriable.validation.uri.slug.not_found'] );
                 }
                 if($uriable && ($uriable->is($foundUriable) || $foundUriable->pointUriToLastIns()->is($uriable))) {
-                    return $fail(trans('admin/uriable/uriable.validation.uri.slug.recursion'));
+                    return $fail( $langs['admin/uriable/uriable.validation.uri.slug.recursion']);
                 }
             }],
             'uri.pointable_type' => ['required', "in:{$typeOptions}", 'max:255']

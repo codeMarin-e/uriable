@@ -7,8 +7,8 @@
         $uri = (isset($uriable) && $uriable)? $uriable->getUriIns(app()->getLocale(), app()->make('Site')->id) : null;
         $excludeTypes = $excludeTypes?? [];
         $typeOptions = [];
-        if(!in_array('default', $excludeTypes)) $typeOptions['default'] = $langs['type.default'];
-        if(!in_array('link', $excludeTypes)) $typeOptions['link'] = $langs['type.link'];
+        if(!in_array('default', $excludeTypes)) $typeOptions['default'] = $langs['type']['default'];
+        if(!in_array('link', $excludeTypes)) $typeOptions['link'] = $langs['type']['link'];
         foreach(\App\Models\Uri::$uriableClasses as $class => $translationKey) {
             if(in_array($class, $excludeTypes)) continue;
             $typeOptions[$class] = trans($translationKey);
