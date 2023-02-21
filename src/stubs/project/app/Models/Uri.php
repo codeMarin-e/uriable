@@ -108,6 +108,7 @@ class Uri extends Model {
     }
 
     public static function validated(&$validatedData) {
+        $validatedData['uri']['type'] = $validatedData['uri']['pointable_type'];
         if($validatedData['uri']['pointable_type'] == 'default') {
             $validatedData['uri']['pointable_type'] = $validatedData['uri']['pointable_id'] = null;
             $validatedData['uri']['is_link'] = false;
