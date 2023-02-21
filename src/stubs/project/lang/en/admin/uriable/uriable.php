@@ -1,5 +1,5 @@
 <?php
-return [
+return \Illuminate\Support\Arr::undot([
     'label' => 'Uri',
     'types' => 'Point To',
     'type.default' => 'Default',
@@ -15,4 +15,4 @@ return [
         'uri.pointable_type.max' =>  '`Uri Type` is too long',
         'uri.pointable_type.in' =>  '`Uri Type` is not correct type',
     ]),
-];
+]);
