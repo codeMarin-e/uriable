@@ -108,19 +108,19 @@ class Uri extends Model {
     }
 
     public static function validated(&$validatedData) {
-        $validatedData['uri']['type'] = $validatedData['uri']['pointable_type'];
+        $validatedData['uri']['attributes'] = [];
         if($validatedData['uri']['pointable_type'] == 'default') {
-            $validatedData['uri']['pointable_type'] = $validatedData['uri']['pointable_id'] = null;
-            $validatedData['uri']['is_link'] = false;
+            $validatedData['uri']['attributes']['pointable_type'] = $validatedData['uri']['pointable_id'] = null;
+            $validatedData['uri']['attributes']['is_link'] = false;
             return;
         }
         if($validatedData['uri']['pointable_type'] == 'link') {
-            $validatedData['uri']['pointable_type'] = $validatedData['uri']['pointable_id'] = null;
-            $validatedData['uri']['is_link'] = true;
+            $validatedData['uri']['attributes']['pointable_type'] = $validatedData['uri']['pointable_id'] = null;
+            $validatedData['uri']['attributes']['is_link'] = true;
             return;
         }
-        $validatedData['uri']['pointable_id'] = (int)$validatedData['uri']['slug'];
-        $validatedData['uri']['is_link'] = false;
-        $validatedData['uri']['slug'] = null;
+        $validatedData['uri']['attributes']['pointable_id'] = (int)$validatedData['uri']['slug'];
+        $validatedData['uri']['attributes']['is_link'] = false;
+        $validatedData['uri']['attributes']['slug'] = null;
     }
 }
