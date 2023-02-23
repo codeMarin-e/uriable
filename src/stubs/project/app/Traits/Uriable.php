@@ -23,7 +23,7 @@ trait Uriable {
         static::deleting( static::class.'@onDeleting_uris' );
     }
 
-    public function defaultUri($language = null, $site_id = null, $prepareLevel = null) { //just for default
+    public function defaultUri($language = null, $site_id = null, $prepareLevel = null, $additionals = []) { //just for default
         return strtolower(basename(static::class) ).'/'.$this->id;
     }
 
@@ -60,9 +60,9 @@ trait Uriable {
         return $this;
     }
 
-    public function getUriSlug($language = null, $site_id = null, $prepareLevel = null) {
+    public function getUriSlug($language = null, $site_id = null, $prepareLevel = null, $additionals = []) {
         if(!($uriIns = $this->getUriIns($language, $site_id))) {
-            return $this->defaultUri($language, $site_id, $prepareLevel);
+            return $this->defaultUri($language, $site_id, $prepareLevel, $additionals);
         }
         if($uriIns->is_link) {
             return $uriIns->slug;
@@ -71,13 +71,13 @@ trait Uriable {
             return $pointTo->getUriSlug($language, $site_id);
         }
         return (method_exists($this, 'prepareSlug'))?
-            $this->prepareSlug($uriIns->slug, $prepareLevel) :
+            $this->prepareSlug($uriIns->slug, $prepareLevel, $additionals) :
             $uriIns->slug;
     }
 
-    public function getUri($language = null, $site_id = null) {
+    public function getUri($language = null, $site_id = null, $additionals = []) {
         $language = $language?? app()->getLocale();
-        $slug = $this->getUriSlug($language, $site_id);
+        $slug = $this->getUriSlug($language, $site_id, additionals: $additionals);
         if(filter_var($slug, FILTER_VALIDATE_URL) !== false) return $slug;
         return route((config('app.fallback_locale') == $language? 'fallback' : 'i18n_fallback'), $slug);
     }
